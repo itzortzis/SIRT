@@ -15,7 +15,25 @@ get_cur_ip_addr()
     done
 }
 
+
+get_known_ip_addr()
+{
+    infile=./known_ip.txt
+    while read -r line
+    do
+        known_ip="$line"
+    done < "$infile"
+}
+
 ip_addr=xxx.xxx.xxx.xxx
 get_cur_ip_addr
 
 echo $ip_addr
+
+get_known_ip_addr
+echo $known_ip
+
+# if [[ $ip_addr == $known_ip ]];
+# then
+#     echo "Yeees"
+# fi
