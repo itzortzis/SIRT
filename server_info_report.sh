@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 
 get_cur_ip_addr()
@@ -18,7 +18,7 @@ get_cur_ip_addr()
 
 get_known_ip_addr()
 {
-    infile=./known_ip.txt
+    infile=/home/itzo/melina_conf/known_ip.txt
     while read -r line
     do
         known_ip="$line"
@@ -28,7 +28,7 @@ get_known_ip_addr()
 
 get_mail_info()
 {
-    infile=./messages.txt
+    infile=/home/itzo/melina_conf/messages.txt
     i=0
     IFS=$'\n' 
     while read -r line
@@ -48,33 +48,26 @@ get_mail_info()
 
 update_ip_addr()
 {
-    echo $1 > known_ip.txt
+    echo $1 > /home/itzo/melina_conf/known_ip.txt
 }
 
 send_report()
 {
     subject=$1
     body=$2
-    echo $subject
-    echo $body
-    echo $body | mail -A known_ip.txt -s $subject i.n.tzortzis@gmail.com
+    report=/home/itzo/melina_conf/known_ip.txt
+    receiver=i.n.tzortzis@gmail.com
+    echo $body | mail -A $report -s $subject $receiver
 }
 
 ip_addr=xxx.xxx.xxx.xxx
 get_cur_ip_addr
-
-echo $ip_addr
-
 get_known_ip_addr
-echo $known_ip
-
 get_mail_info
 
 
-if [[ $ip_addr == $known_ip ]];
+if [[ $ip_addr != $known_ip ]];
 then
-    echo "Yeees"
-else
     update_ip_addr $ip_addr
     send_report $mail_sub $mail_body
 fi
